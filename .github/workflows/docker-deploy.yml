@@ -16,7 +16,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
-          key: ${{ secrets.KEY }}  # This must be your PRIVATE key
+          key: ${{ secrets.KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest
             docker stop mleng_sayhi || true
