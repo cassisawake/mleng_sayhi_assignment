@@ -1,7 +1,7 @@
 name: Deploy Docker Image to Server
+
 on:
   workflow_run:
-    # This GitHub Action depends on another, which package up docker and pushes it to a  docker repo
     workflows: ["Build and Push Docker Image"]
     types:
       - completed
@@ -9,7 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    # If the docker build went ok and the image was pushed to the docker repo, then deploy it to the server
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Deploy to Linux server
@@ -20,9 +19,9 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             docker pull ${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest
-            docker stop ${{ secrets.DOCKER_USERNAME }}/mleng_sayhi || true
-            docker rm ${{ secrets.DOCKER_USERNAME }}/mleng_sayhi || true
-            docker run -d --name ${{ secrets.DOCKER_USERNAME }}/mleng_sayhi -v /opt/assignment_outputs:/app/data ${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest
+            docker stop mleng_sayhi || true
+            docker rm mleng_sayhi || true
+            docker run -d --name mleng_sayhi -v /opt/assignment_outputs:/app/data ${{ secrets.DOCKER_USERNAME }}/mleng_sayhi:latest
 
 # The final block "logs on" to the remote server
 # - gets the latest docker image from the repository
